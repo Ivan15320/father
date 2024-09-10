@@ -68,7 +68,7 @@ class TtkCalendar(ttk.Frame):
 
     def build_calendar(self):
         year, month = self.date.year, self.date.month
-        month_name = MONTHS[month-1]
+        month_name = " ".join([MONTHS[month-1], str(year)])
         month_weeks = self.cal.monthdayscalendar(year, month)
         print(month_weeks)
 
@@ -116,7 +116,7 @@ class TtkCalendar(ttk.Frame):
     def create_table(self):
         cols = DAYS
         table = ttk.Treeview(self, show='', selectmode='none',
-                             height=7, columns=cols, width=10)
+                             height=7, columns=cols)
 
 
         table.pack(expand=1, fill=tk.BOTH)
