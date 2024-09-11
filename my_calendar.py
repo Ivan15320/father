@@ -19,11 +19,12 @@ class TtkCalendar(ttk.Frame):
 
         super().__init__(master, **kw)
 
-        self.selected = None
+        self.selected = ''
         self.date = datetime.date(year, month, 1)
         self.cal = calendar.TextCalendar(fwday)
         self.font = tkfont.Font(self)
         self.header = self.create_header()
+        self.label = self.create_lable()
         self.table = self.create_table()
         self.canvas = self.create_canvas(sel_bg, sel_fg)
         self.build_calendar()
@@ -46,6 +47,11 @@ class TtkCalendar(ttk.Frame):
         btn_left.grid(row=0, column=0)
         label.grid(row=0, column=1, padx=12)
         btn_right.grid(row=0, column=2)
+        return label
+
+    def create_lable(self):
+        label = ttk.Label(self, text='Не выбрано')
+        label.pack()
         return label
 
     def move_month(self, offset):
@@ -97,6 +103,7 @@ class TtkCalendar(ttk.Frame):
         if bbox and text:
             self.selected = '%02d' % text
             self.show_selection(bbox)
+            self.label.config(text='-'.join([self.selected, str(self.date.month), str(self.date.year)]))
 
     def show_selection(self, bbox):
         canvas, text = self.canvas, self.selected
@@ -107,6 +114,7 @@ class TtkCalendar(ttk.Frame):
         canvas.itemconfigure(canvas.text, text=text)
         canvas.place(x=x, y=y)
 
+
     @property
     def selection(self):
         if self.selected:
@@ -116,7 +124,7 @@ class TtkCalendar(ttk.Frame):
     def create_table(self):
         cols = DAYS
         table = ttk.Treeview(self, show='', selectmode='none',
-                             height=7, columns=cols)
+                             height=7, columns=cols, padding=5)
 
 
         table.pack(expand=1, fill=tk.BOTH)
@@ -127,5 +135,5 @@ class TtkCalendar(ttk.Frame):
 
         width = max(map(self.font.measure, cols))
         for col in cols:
-            table.column(col, width=width, minwidth=width, anchor=tk.E)
+            table.column(col, width=width + 5, minwidth=width, anchor=tk.E)
         return table
