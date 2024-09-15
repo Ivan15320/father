@@ -76,7 +76,7 @@ class TtkCalendar(ttk.Frame):
         year, month = self.date.year, self.date.month
         month_name = " ".join([MONTHS[month-1], str(year)])
         month_weeks = self.cal.monthdayscalendar(year, month)
-        print(month_weeks)
+
 
         self.header.config(text=month_name.title())
         items = self.table.get_children()[1:]
